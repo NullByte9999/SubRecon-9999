@@ -78,27 +78,29 @@ Once the installation and permission steps are completed, you can run the tool d
 ```
 ./subrecon.sh
 ```
-Execution Example:
+##Execution Example:
 Run the script.
 
 When prompted (Enter Target Domain:), type your target domain (for example: craw.in)[cite: 6].
 
 Watch the terminal as it performs subdomain discovery followed by High-Speed Status Probing & Deep Analysis[cite: 6].
 
-📊 Understanding the Output & Status Codes
+##📊 Understanding the Output & Status Codes
 During the deep analysis phase, you will see output structured like this:
-
+```
 [+] Engaging High-Speed Status Probing & Deep Analysis ...
 
 [ACTIVE] [Status: 403 - Forbidden] → accounts.craw.in
 [ACTIVE] [Status: 200 - OK]        → cms.craw.in
 [DEAD]   [Status: No Response]     → exam.craw.in
 [ACTIVE] [Status: 200 - OK]        → livex.craw.in
+```
 [ACTIVE] / [Status: 200 - OK]: Indicates that the web server is up and returning content successfully.
 
 [ACTIVE] / [Status: 403 - Forbidden]: The server is alive, but access to the specific resource is restricted (worth investigating for hidden directories/bypasses).
 
 [DEAD] / [Status: No Response]: The subdomain does not resolve or the server is currently down/offline.
 
-🛡️ Disclaimer
+
+##🛡️ Disclaimer
 This tool is developed strictly for educational purposes, authorized security testing, and bug bounty programs with explicit permission. The author is not responsible for any misuse or illegal activities conducted using this script.
