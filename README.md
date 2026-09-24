@@ -61,19 +61,23 @@ To download and set up the tool locally on your system, execute the following co
 Clone the project from GitHub to your local machine using the `git clone` command:
 ```bash
 git clone [https://github.com/YourUsername/SubRecon-Tool.git](https://github.com/YourUsername/SubRecon-Tool.git)
-```bash
+```
 
 Step 2: Navigate into the Project Directory
 Change your current working directory to the newly created folder:
+```
 cd SubRecon-Tool
-
+```
 Step 3: Grant Executable Permissions
 Since it is a Bash script (.sh), you must give it execution permissions using the chmod command:
+```
 chmod +x subrecon.sh
-
+```
 💻 Usage & Execution
 Once the installation and permission steps are completed, you can run the tool directly from your terminal:
+```
 ./subrecon.sh
+```
 Execution Example:
 Run the script.
 
