@@ -73,7 +73,7 @@ Since it is a Bash script (.sh), you must give it execution permissions using th
 ```
 chmod +x subrecon.sh
 ```
-💻 Usage & Execution
+💻 **Usage & Execution**
 Once the installation and permission steps are completed, you can run the tool directly from your terminal:
 ```
 ./subrecon.sh
@@ -85,7 +85,7 @@ When prompted (Enter Target Domain:), type your target domain (for example: craw
 
 Watch the terminal as it performs subdomain discovery followed by High-Speed Status Probing & Deep Analysis[cite: 6].
 
-##📊 Understanding the Output & Status Codes
+##v📊 **Understanding the Output & Status Codes**
 During the deep analysis phase, you will see output structured like this:
 ```
 [+] Engaging High-Speed Status Probing & Deep Analysis ...
@@ -102,5 +102,5 @@ During the deep analysis phase, you will see output structured like this:
 [DEAD] / [Status: No Response]: The subdomain does not resolve or the server is currently down/offline.
 
 
-##🛡️ Disclaimer
+##🛡️** Disclaimer**
 This tool is developed strictly for educational purposes, authorized security testing, and bug bounty programs with explicit permission. The author is not responsible for any misuse or illegal activities conducted using this script.
