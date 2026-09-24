@@ -14,6 +14,9 @@
 7. [Understanding the Output & Status Codes](#-understanding-the-output--status-codes)
 8. [Author & Disclaimer](#-author--disclaimer)
 
+![Tool Preview](Screenshot_2026-09-24_04_03_48.png)
+![Tool Preview](Screenshot_2026-09-24_04_03_53.png)
+
 ---
 
 ## 🔍 About The Tool
