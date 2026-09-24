@@ -1,0 +1,192 @@
+#!/bin/bash
+
+# =====================================================================
+# #9999 NEXT-LEVEL CYBERNETIC SUBDOMAIN & STATUS PROBER (V3)
+# =====================================================================
+
+# Color Codes
+RED='\033[1;31m'
+ORANGE='\033[1;33m'
+GREEN='\033[1;32m'
+BLUE='\033[1;34m'
+PURPLE='\033[1;35m'
+CYAN='\033[1;36m'
+WHITE='\033[1;37m'
+MAGENTA='\033[1;95m'
+NC='\033[0m' # No Color
+
+# Clean Typewriter Animation Function (Without color escape code bugs)
+print_slow() {
+    text="$1"
+    color="${2:-$WHITE}"
+    delay="${3:-0.012}"
+    echo -ne "$color"
+    for (( i=0; i<${#text}; i++ )); do
+        echo -ne "${text:$i:1}"
+        sleep "$delay"
+    done
+    echo -e "${NC}"
+}
+
+# Next-Level Animated Banner Function
+print_banner() {
+    clear
+    BANNER="
+${PURPLE} #   #   ████   ████   ████   ████ ${NC}
+${PURPLE} #   #  █    █ █    █ █    █ █    █${NC}
+${PURPLE} #####   █████  █████  █████  █████${NC}
+${PURPLE} #   #       █      █      █      █${NC}
+${PURPLE} #   #   ████   ████   ████   ████ ${NC}
+${CYAN}   #9999 AUTOMATED RECON & ENUMERATION TOOL       ${NC}
+${BLUE}====================================================${NC}"
+
+    while IFS= read -r line; do
+        echo -e "$line"
+        sleep 0.02
+    done <<< "$BANNER"
+}
+
+print_banner
+
+# 1. Target Domain Input
+echo -ne "${ORANGE}"
+print_slow "[?] Enter target domain (e.g., example.com): " "$ORANGE" 0.015
+echo -ne "${NC}"
+read DOMAIN
+
+if [ -z "$DOMAIN" ]; then
+    print_slow "[!] Error: Domain cannot be empty!" "$RED" 0.015
+    exit 1
+fi
+
+echo ""
+print_slow "[*] Initializing Dark Matrix Subdomain Pipeline..." "$RED" 0.015
+sleep 0.4
+
+# Temporary file for raw data
+RAW_DATA=$(mktemp)
+
+# 3. Subdomain Discovery
+print_slow "[+] Harvesting unique digital assets for $DOMAIN..." "$RED" 0.015
+
+if command -v subfinder &> /dev/null; then
+    subfinder -d "$DOMAIN" -silent >> "$RAW_DATA" 2>/dev/null &
+fi
+
+if command -v assetfinder &> /dev/null; then
+    assetfinder --subs-only "$DOMAIN" >> "$RAW_DATA" 2>/dev/null &
+fi
+
+curl -s "https://crt.sh/?q=%25.$DOMAIN&output=json" | grep -oE "[a-zA-Z0-9._-]+\.$DOMAIN" >> "$RAW_DATA" 2>/dev/null &
+
+wait
+
+# 4. Sort and Unique
+print_slow "[+] Filtering and purifying unique endpoints..." "$RED" 0.015
+
+if [ -s "$RAW_DATA" ]; then
+    UNIQUE_SUBS=$(cat "$RAW_DATA" | sed 's/^\*\.//g' | sed 's/^\\//g' | tr '[:upper:]' '[:lower:]' | sed 's/^[ \t]*//;s/[ \t]*$//' | grep -E '^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' | sort -u)
+    rm -f "$RAW_DATA"
+    
+    TOTAL_UNIQUE=$(echo "$UNIQUE_SUBS" | grep -v '^$' | wc -l)
+    print_slow "[✔] Total Unique Subdomains Discovered: $TOTAL_UNIQUE" "$GREEN" 0.015
+    
+    echo -e "\n${CYAN}--- UNIQUE TARGET SUBDOMAINS ---${NC}"
+    # Subdomains printing one by one smoothly
+    while IFS= read -r sub; do
+        if [ ! -z "$sub" ]; then
+            print_slow "  $sub" "$CYAN" 0.008
+        fi
+    done <<< "$UNIQUE_SUBS"
+    echo -e "${CYAN}--------------------------------${NC}"
+else
+    print_slow "[!] No subdomains found for this target." "$RED" 0.015
+    rm -f "$RAW_DATA"
+    exit 1
+fi
+
+# 5. Advanced Multi-Color Prober with Typewriter Animation
+print_slow "\n[+] Engaging High-Speed Status Probing & Deep Analysis..." "$RED" 0.015
+echo ""
+
+python3 -c "
+import urllib.request
+import concurrent.futures
+import sys
+import time
+
+subdomains = '''$UNIQUE_SUBS'''.splitlines()
+
+status_meanings = {
+    100: 'Continue', 101: 'Switching Protocols', 102: 'Processing', 103: 'Early Hints',
+    200: 'OK', 201: 'Created', 202: 'Accepted', 203: 'Non-Authoritative Information',
+    204: 'No Content', 205: 'Reset Content', 206: 'Partial Content', 207: 'Multi-Status',
+    208: 'Already Reported', 226: 'IM Used',
+    300: 'Multiple Choices', 301: 'Moved Permanently', 302: 'Found', 303: 'See Other',
+    304: 'Not Modified', 305: 'Use Proxy', 307: 'Temporary Redirect', 308: 'Permanent Redirect',
+    400: 'Bad Request', 401: 'Unauthorized', 402: 'Payment Required', 403: 'Forbidden',
+    404: 'Not Found', 405: 'Method Not Allowed', 406: 'Not Acceptable', 407: 'Proxy Authentication Required',
+    408: 'Request Timeout', 409: 'Conflict', 410: 'Gone', 411: 'Length Required',
+    412: 'Precondition Failed', 413: 'Payload Too Large', 414: 'URI Too Long', 415: 'Unsupported Media Type',
+    416: 'Range Not Satisfiable', 417: 'Expectation Failed', 418: 'I am a teapot', 421: 'Misdirected Request',
+    422: 'Unprocessable Entity', 423: 'Locked', 424: 'Failed Dependency', 425: 'Too Early',
+    426: 'Upgrade Required', 428: 'Precondition Required', 429: 'Too Many Requests', 431: 'Request Header Fields Too Large',
+    451: 'Unavailable For Legal Reasons',
+    500: 'Internal Server Error', 501: 'Not Implemented', 502: 'Bad Gateway', 503: 'Service Unavailable',
+    504: 'Gateway Timeout', 505: 'HTTP Version Not Supported', 506: 'Variant Also Negotiates', 507: 'Insufficient Storage',
+    508: 'Loop Detected', 510: 'Not Extended', 511: 'Network Authentication Required'
+}
+
+def check_subdomain(sub):
+    sub = sub.strip()
+    if not sub:
+        return None
+    for proto in ['https://', 'http://']:
+        url = proto + sub
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            res = urllib.request.urlopen(req, timeout=3)
+            return (sub, res.getcode(), True)
+        except urllib.error.HTTPError as e:
+            return (sub, e.code, True)
+        except Exception:
+            continue
+    return (sub, 0, False)
+
+checked_count = 0
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=35) as executor:
+    results = executor.map(check_subdomain, subdomains)
+    for sub, code, is_active in results:
+        if is_active:
+            meaning = status_meanings.get(code, 'Unknown Status')
+            if 100 <= code < 200:
+                out_str = f'\033[1;96m[ACTIVE]   [Status: {code} - {meaning}] --> \033[1;97m{sub}\033[0m'
+            elif 200 <= code < 300:
+                out_str = f'\033[1;32m[ACTIVE]   [Status: {code} - {meaning}] --> \033[1;92m{sub}\033[0m'
+            elif 300 <= code < 400:
+                out_str = f'\033[1;33m[ACTIVE]   [Status: {code} - {meaning}] --> \033[1;93m{sub}\033[0m'
+            elif 400 <= code < 500:
+                out_str = f'\033[1;91m[ACTIVE]   [Status: {code} - {meaning}] --> \033[1;91m{sub}\033[0m'
+            elif code >= 500:
+                out_str = f'\033[1;31m[ACTIVE]   [Status: {code} - {meaning}] --> \033[1;91m{sub}\033[0m'
+            else:
+                out_str = f'\033[1;35m[ACTIVE]   [Status: {code} - {meaning}] --> \033[1;37m{sub}\033[0m'
+            checked_count += 1
+        else:
+            out_str = f'\033[1;90m[DEAD]     [Status: No Response]     --> {sub}\033[0m'
+            checked_count += 1
+        
+        # Smooth printing effect for Python results too
+        for char in out_str:
+            sys.stdout.write(char)
+            sys.stdout.flush()
+            time.sleep(0.003)
+        print()
+
+print(f'\n\033[1;32m[+] Total Processed Subdomains Analyzed: {checked_count}\033[0m')
+"
+
+echo -e "\n${BLUE}====================================================${NC}"
+print_slow "      DARK MATRIX RECON & PROBING COMPLETED!        " "$GREEN" 0.01
+echo -e "${BLUE}====================================================${NC}"
