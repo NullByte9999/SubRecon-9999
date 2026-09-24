@@ -61,6 +61,7 @@ To download and set up the tool locally on your system, execute the following co
 Clone the project from GitHub to your local machine using the `git clone` command:
 ```bash
 git clone [https://github.com/YourUsername/SubRecon-Tool.git](https://github.com/YourUsername/SubRecon-Tool.git)
+```bash
 
 Step 2: Navigate into the Project Directory
 Change your current working directory to the newly created folder:
